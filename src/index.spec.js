@@ -1,10 +1,15 @@
-import Countdown from '.'
+import { style } from '.'
 
-describe('countdown', () => {
-  it('should count down', () => {
-    expect(new Countdown(3).count()).toBe('3...2...1...')
-  })
-  it('should count down from 5', () => {
-    expect(new Countdown(5).count()).toBe('5...4...3...2...1...')
+describe('style', () => {
+  const fn = style({ prop: '$test', css: 'testCss' })
+
+  it('should return an appropriate style object', () => {
+    expect(
+      fn({
+        $test: 1
+      })
+    ).toEqual({
+      testCss: 1
+    })
   })
 })
