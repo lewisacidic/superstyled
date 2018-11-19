@@ -152,3 +152,85 @@ describe('style with a transformer', () => {
     })
   })
 })
+
+describe('style with theme', () => {
+  let fn = style({ prop: '$test', css: 'testCss', themeKey: 'testKey' })
+
+  it('should retrieve style elements from the theme', () => {
+    expect(
+      fn({
+        $test: 'example',
+        theme: {
+          testKey: {
+            example: 42
+          }
+        }
+      })
+    ).toEqual({ testCss: 42 })
+  })
+
+  it('should retrieve style elements for a media query array', () => {
+    expect(
+      fn({
+        $test: ['example1', 'example2', 'example3'],
+        theme: {
+          testKey: {
+            example1: 21,
+            example2: 42,
+            example3: 84
+          }
+        }
+      })
+    ).toEqual({
+      testCss: 21,
+      '@media screen and (min-width: 40em)': { testCss: 42 },
+      '@media screen and (min-width: 52em)': { testCss: 84 }
+    })
+  })
+
+  it('should retrieve style elements for a pseudoselector object', () => {
+    expect(
+      fn({
+        $test: {
+          default: 'example1',
+          hover: 'example2',
+          active: 'example3'
+        },
+        theme: {
+          testKey: {
+            example1: 21,
+            example2: 42,
+            example3: 84
+          }
+        }
+      })
+    ).toEqual({
+      testCss: 21,
+      '&:hover': {
+        testCss: 42
+      },
+      '&:active': {
+        testCss: 84
+      }
+    })
+  })
+
+  let tFn = style({
+    prop: '$test',
+    css: 'testCss',
+    themeKey: 'testKey',
+    transformer: v => v + 'px'
+  })
+  it('should apply transformers to the elements retrieved from the theme', () => {
+    expect(
+      tFn({
+        $test: 'example',
+        theme: {
+          testKey: {
+            example: 42
+          }
+        }
+      })
+    ).toEqual({ testCss: '42px' })
+  })
+})
