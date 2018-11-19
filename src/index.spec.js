@@ -102,3 +102,53 @@ describe('style', () => {
     })
   })
 })
+
+describe('style with a transformer', () => {
+  const fn = style({
+    prop: '$test',
+    css: 'testCss',
+    transformer: v => v + 'em'
+  })
+
+  it('should apply a transformer', () => {
+    expect(
+      fn({
+        $test: 1
+      })
+    ).toEqual({
+      testCss: '1em'
+    })
+  })
+
+  it('should apply the transformer to every element in an array', () => {
+    expect(
+      fn({
+        $test: [1, 2, 3]
+      })
+    ).toEqual({
+      testCss: '1em',
+      '@media screen and (min-width: 40em)': { testCss: '2em' },
+      '@media screen and (min-width: 52em)': { testCss: '3em' }
+    })
+  })
+
+  it('should apply the transformer to every element in an object', () => {
+    expect(
+      fn({
+        $test: {
+          default: 1,
+          hover: 2,
+          active: 3
+        }
+      })
+    ).toEqual({
+      testCss: '1em',
+      '&:hover': {
+        testCss: '2em'
+      },
+      '&:active': {
+        testCss: '3em'
+      }
+    })
+  })
+})

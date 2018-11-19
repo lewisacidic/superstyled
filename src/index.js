@@ -1,10 +1,10 @@
-import { isObject, isArray } from 'lodash'
+import { isObject, isArray, identity } from 'lodash'
 
 const makeBreakpoint = p => `@media screen and (min-width: ${p}em)`
 
 const defaultBreakpoints = [40, 52, 64].map(makeBreakpoint)
 
-export const style = ({ prop, css }) => {
+export const style = ({ prop, css, transformer = identity }) => {
   function fn(value) {
     if (isArray(value)) {
       return value.reduce(
@@ -24,7 +24,7 @@ export const style = ({ prop, css }) => {
         }
       }, {})
     } else {
-      return { [css]: value }
+      return { [css]: transformer(value) }
     }
   }
   return props => fn(props[prop])
