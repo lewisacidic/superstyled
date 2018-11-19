@@ -12,4 +12,93 @@ describe('style', () => {
       testCss: 1
     })
   })
+
+  it('should return an appropriate media query enriched style object if an array is provided', () => {
+    expect(
+      fn({
+        $test: [1, 2, 3]
+      })
+    ).toEqual({
+      testCss: 1,
+      '@media screen and (min-width: 40em)': { testCss: 2 },
+      '@media screen and (min-width: 52em)': { testCss: 3 }
+    })
+  })
+
+  it('should return an appropriate pseudo-class enriched style object if an object is provided', () => {
+    expect(
+      fn({
+        $test: {
+          default: 1,
+          hover: 2,
+          active: 3
+        }
+      })
+    ).toEqual({
+      testCss: 1,
+      '&:hover': {
+        testCss: 2
+      },
+      '&:active': {
+        testCss: 3
+      }
+    })
+  })
+
+  it('should return a nested style object if an array of objects are provided', () => {
+    expect(
+      fn({
+        $test: [
+          { default: 1, hover: 2 },
+          { default: 2, hover: 3 },
+          { default: 3, hover: 4 }
+        ]
+      })
+    ).toEqual({
+      testCss: 1,
+      '&:hover': {
+        testCss: 2
+      },
+      '@media screen and (min-width: 40em)': {
+        testCss: 2,
+        '&:hover': {
+          testCss: 3
+        }
+      },
+      '@media screen and (min-width: 52em)': {
+        testCss: 3,
+        '&:hover': {
+          testCss: 4
+        }
+      }
+    })
+  })
+
+  it('should return a nested style object if an object of arrays are provided', () => {
+    expect(
+      fn({
+        $test: {
+          default: [1, 2, 3],
+          hover: [2, 3, 4]
+        }
+      })
+    ).toEqual({
+      testCss: 1,
+      '@media screen and (min-width: 40em)': {
+        testCss: 2
+      },
+      '@media screen and (min-width: 52em)': {
+        testCss: 3
+      },
+      '&:hover': {
+        testCss: 2,
+        '@media screen and (min-width: 40em)': {
+          testCss: 3
+        },
+        '@media screen and (min-width: 52em)': {
+          testCss: 4
+        }
+      }
+    })
+  })
 })
