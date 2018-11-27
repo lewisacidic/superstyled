@@ -1,103 +1,134 @@
 import { style } from '.'
 
 describe('style', () => {
-  const fn = style({ prop: '$test', css: 'testCss' })
+  it('should import as a function', () => {
+    expect(typeof style).toBe('function')
+  })
 
   it('should return an appropriate style object', () => {
-    expect(
-      fn({
-        $test: 1
-      })
-    ).toEqual({
-      testCss: 1
-    })
+    const fn = style({ prop: '$test', css: 'testCss' })
+    const $test = 'testValue'
+
+    expect(fn({ $test })).toEqual({ testCss: $test })
   })
 
   it('should return an appropriate media query enriched style object if an array is provided', () => {
-    expect(
-      fn({
-        $test: [1, 2, 3]
-      })
-    ).toEqual({
-      testCss: 1,
-      '@media screen and (min-width: 40em)': { testCss: 2 },
-      '@media screen and (min-width: 52em)': { testCss: 3 }
+    const fn = style({ prop: '$test', css: 'testCss' })
+    const $test = ['testValueA', 'testValueB', 'testValueC']
+
+    expect(fn({ $test })).toEqual({
+      testCss: $test[0],
+      '@media screen and (min-width: 40em)': { testCss: $test[1] },
+      '@media screen and (min-width: 52em)': { testCss: $test[2] }
     })
   })
 
   it('should return an appropriate pseudo-class enriched style object if an object is provided', () => {
-    expect(
-      fn({
-        $test: {
-          default: 1,
-          hover: 2,
-          active: 3
-        }
-      })
-    ).toEqual({
-      testCss: 1,
+    const fn = style({ prop: '$test', css: 'testCss' })
+    const $test = {
+      default: 'testValueA',
+      hover: 'testValueB',
+      active: 'testValueC'
+    }
+    expect(fn({ $test })).toEqual({
+      testCss: $test.default,
       '&:hover': {
-        testCss: 2
+        testCss: $test.hover
       },
       '&:active': {
-        testCss: 3
+        testCss: $test.active
       }
     })
   })
 
   it('should return a nested style object if an array of objects are provided', () => {
-    expect(
-      fn({
-        $test: [
-          { default: 1, hover: 2 },
-          { default: 2, hover: 3 },
-          { default: 3, hover: 4 }
-        ]
-      })
-    ).toEqual({
-      testCss: 1,
+    const fn = style({ prop: '$test', css: 'testCss' })
+    const $test = [
+      { default: 'testValueA', hover: 'testValueB' },
+      { default: 'testValueC', hover: 'testValueD' },
+      { default: 'testValueE', hover: 'testValueF' }
+    ]
+
+    expect(fn({ $test })).toEqual({
+      testCss: $test[0].default,
       '&:hover': {
-        testCss: 2
+        testCss: $test[0].hover
       },
       '@media screen and (min-width: 40em)': {
-        testCss: 2,
+        testCss: $test[1].default,
         '&:hover': {
-          testCss: 3
+          testCss: $test[1].hover
         }
       },
       '@media screen and (min-width: 52em)': {
-        testCss: 3,
+        testCss: $test[2].default,
         '&:hover': {
-          testCss: 4
+          testCss: $test[2].hover
         }
       }
     })
   })
 
   it('should return a nested style object if an object of arrays are provided', () => {
+    const fn = style({ prop: '$test', css: 'testCss' })
+    const $test = {
+      default: ['testValueA', 'testValueB', 'testValueC'],
+      hover: ['testValueD', 'testValueE', 'testValueF']
+    }
+
+    expect(fn({ $test })).toEqual({
+      testCss: $test.default[0],
+      '@media screen and (min-width: 40em)': {
+        testCss: $test.default[1]
+      },
+      '@media screen and (min-width: 52em)': {
+        testCss: $test.default[2]
+      },
+      '&:hover': {
+        testCss: $test.hover[0],
+        '@media screen and (min-width: 40em)': {
+          testCss: $test.hover[1]
+        },
+        '@media screen and (min-width: 52em)': {
+          testCss: $test.hover[2]
+        }
+      }
+    })
+  })
+})
+
+describe('style with breakpoints', () => {
+  const fn = style({ prop: '$test', css: 'testCss' })
+  const $test = ['testValueA', 'testValueB', 'testValueC']
+
+  it('should use default breakpoints if none are defined', () => {
+    expect(fn({ $test })).toEqual({
+      testCss: $test[0],
+      [`@media screen and (min-width: 40em)`]: {
+        testCss: $test[1]
+      },
+      [`@media screen and (min-width: 52em)`]: {
+        testCss: $test[2]
+      }
+    })
+  })
+  it('should look up breakpoints from the theme', () => {
+    const breakpoints = ['21em', '42em']
+
     expect(
       fn({
-        $test: {
-          default: [1, 2, 3],
-          hover: [2, 3, 4]
+        $test,
+        theme: {
+          breakpoints
         }
       })
     ).toEqual({
-      testCss: 1,
-      '@media screen and (min-width: 40em)': {
-        testCss: 2
+      testCss: $test[0],
+      [`@media screen and (min-width: ${breakpoints[0]})`]: {
+        testCss: $test[1]
       },
-      '@media screen and (min-width: 52em)': {
-        testCss: 3
-      },
-      '&:hover': {
-        testCss: 2,
-        '@media screen and (min-width: 40em)': {
-          testCss: 3
-        },
-        '@media screen and (min-width: 52em)': {
-          testCss: 4
-        }
+      [`@media screen and (min-width: ${breakpoints[1]})`]: {
+        testCss: $test[2]
       }
     })
   })
@@ -163,6 +194,47 @@ describe('style with theme', () => {
         theme: {
           testKey: {
             example: 42
+          }
+        }
+      })
+    ).toEqual({ testCss: 42 })
+  })
+
+  it('should return the value itself if it misses a key from the theme', () => {
+    expect(
+      fn({
+        $test: 'failedExample',
+        theme: {
+          testKey: {
+            example: 42
+          }
+        }
+      })
+    ).toEqual({ testCss: 'failedExample' })
+  })
+
+  it('should allow array lookup from nested theme', () => {
+    expect(
+      fn({
+        $test: 'example.1',
+        theme: {
+          testKey: {
+            example: ['a', 'b', 'c']
+          }
+        }
+      })
+    ).toEqual({ testCss: 'b' })
+  })
+
+  it('should allow object lookup from nested theme', () => {
+    expect(
+      fn({
+        $test: 'example.innerExample',
+        theme: {
+          testKey: {
+            example: {
+              innerExample: 42
+            }
           }
         }
       })
