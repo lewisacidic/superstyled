@@ -1,4 +1,4 @@
-import { flow, identity, isObject, isArray } from 'lodash/flow'
+import { flow, identity, isObject, isArray } from 'lodash'
 
 const makeBreakpoint = p => `@media screen and (min-width: ${p}em)`
 

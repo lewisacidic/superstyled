@@ -1,38 +1,58 @@
 import resolve from 'rollup-plugin-node-resolve'
 import commonjs from 'rollup-plugin-commonjs'
 import babel from 'rollup-plugin-babel'
+import { terser } from 'rollup-plugin-terser'
 
 import pkg from './package.json'
+
+const defaultArgs = {
+  input: 'src/index.js',
+  external: [
+    'lodash/assign',
+    'lodash/keys',
+    'lodash/get',
+    'lodash/isArray',
+    'lodash/isObject',
+    'lodash/identity',
+    'lodash/flow'
+  ],
+  plugins: [
+    babel({
+      exclude: 'node_modules/**',
+      runtimeHelpers: true
+    }),
+    terser()
+  ]
+}
+
+const production = !(
+  process.env.NODE_ENV === 'production' && process.env.ROLLUP_WATCH
+)
 
 export default [
   {
     input: 'src/index.js',
     output: {
-      name: 'countdown',
+      name: 'superstyled',
       file: pkg.browser,
       format: 'umd'
     },
     plugins: [
+      resolve(),
+      commonjs(),
       babel({
         exclude: 'node_modules/**',
         runtimeHelpers: true
       }),
-      resolve(),
-      commonjs()
+      production && terser()
     ]
   },
   {
-    input: 'src/index.js',
-    external: ['lodash'],
-    output: [
-      { file: pkg.main, format: 'cjs' },
-      { file: pkg.module, format: 'es' }
-    ],
-    plugins: [
-      babel({
-        exclude: 'node_modules/**',
-        runtimeHelpers: true
-      })
-    ]
+    output: { file: pkg.module, format: 'es' },
+    ...defaultArgs
+  },
+  {
+    output: { file: pkg.main, format: 'cjs' },
+    ...defaultArgs
   }
 ]
