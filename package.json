@@ -2,6 +2,12 @@
   "name": "superstyled",
   "version": "0.0.3",
   "description": "styled-components, now super!",
+  "keywords": [
+    "react",
+    "css-in-js",
+    "styled-components",
+    "emotion"
+  ],
   "main": "dist/superstyled.cjs.js",
   "module": "dist/superstyled.esm.js",
   "browser": "dist/superstyled.umd.js",
@@ -27,6 +33,7 @@
     "@babel/plugin-syntax-dynamic-import": "^7.0.0",
     "@babel/plugin-transform-runtime": "^7.1.0",
     "@babel/preset-env": "^7.1.6",
+    "@commitlint/config-conventional": "^7.1.2",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
@@ -41,6 +48,7 @@
     "jest-junit": "^5.2.0",
     "lint-staged": "^8.0.4",
     "prettier": "^1.15.2",
+    "rimraf": "^2.6.2",
     "rollup": "^0.67.1",
     "rollup-plugin-babel": "^4.0.3",
     "rollup-plugin-commonjs": "^9.2.0",
@@ -56,6 +64,7 @@
     "test": "jest",
     "lint": "eslint .",
     "format": "yarn lint --fix",
-    "precommit": "lint-staged"
+    "clean": "rimraf dist reports yarn-error.log",
+    "publish": "yarn publish"
   }
 }
