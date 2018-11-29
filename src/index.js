@@ -1,8 +1,16 @@
-import { flow, identity, isObject, isArray, get, keys, assign } from 'lodash'
+import {
+  flow,
+  identity,
+  isObject,
+  isArray,
+  get,
+  keys,
+  assign,
+  merge,
+  intersection
+} from 'lodash'
 
-const makeBreakpoint = p => `@media screen and (min-width: ${p})`
-
-const em = p => p + 'em'
+import { em, breakpoint } from './transformers'
 
 const defaultBreakpoints = [40, 52, 64].map(em)
 
@@ -35,10 +43,24 @@ export const style = ({ prop, css, themeKey, transformer = identity }) => {
       return { [css]: transformer(value, ...args) }
     }
   }
-  return props =>
+  const styleFn = props =>
     fn(
       props[prop],
       get(props.theme, themeKey),
-      get(props.theme, 'breakpoints', defaultBreakpoints).map(makeBreakpoint)
+      get(props.theme, 'breakpoints', defaultBreakpoints).map(breakpoint)
     )
+  styleFn.prop = prop
+  return styleFn
+}
+
+export const compoundStyle = (...styles) => {
+  styles = styles.reduce(
+    (acc, style) => assign(acc, { [style.prop]: style }),
+    {}
+  )
+  const styleFn = props => {
+    const styleProps = intersection(keys(props), keys(styles))
+    return styleProps.reduce((acc, prop) => merge(acc, styles[prop](props)), {})
+  }
+  return styleFn
 }

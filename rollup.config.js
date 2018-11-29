@@ -8,6 +8,8 @@ import pkg from './package.json'
 const defaultArgs = {
   input: 'src/index.js',
   external: [
+    'lodash/intersection',
+    'lodash/merge',
     'lodash/assign',
     'lodash/keys',
     'lodash/get',

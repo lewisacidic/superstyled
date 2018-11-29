@@ -1,4 +1,4 @@
-import { style } from '.'
+import { style, compoundStyle } from '.'
 
 describe('style', () => {
   it('should import as a function', () => {
@@ -304,5 +304,105 @@ describe('style with theme', () => {
         }
       })
     ).toEqual({ testCss: '42px' })
+  })
+})
+
+describe('compound style', () => {
+  const compound = compoundStyle(
+    style({ prop: '$testProp1', css: 'testCss1' }),
+    style({ prop: '$testProp2', css: 'testCss2' }),
+    style({ prop: '$testProp3', css: 'testCss3' })
+  )
+
+  it('should import as a function', () => {
+    expect(typeof compound).toBe('function')
+  })
+
+  it('should render single styles', () => {
+    expect(compound({ $testProp1: 'testValue1' })).toEqual({
+      testCss1: 'testValue1'
+    })
+  })
+
+  it('should render multiple styles', () => {
+    expect(
+      compound({
+        $testProp1: 'testValue1',
+        $testProp2: 'testValue2',
+        $testProp3: 'testValue3'
+      })
+    ).toEqual({
+      testCss1: 'testValue1',
+      testCss2: 'testValue2',
+      testCss3: 'testValue3'
+    })
+  })
+
+  it('should skip props it does not know', () => {
+    expect(
+      compound({
+        $testProp1: 'testValue1',
+        $testProp2: 'testValue2',
+        $testProp3: 'testValue3',
+        otherProp: 'missedValue',
+        $otherProp: 'missedValue'
+      })
+    ).toEqual({
+      testCss1: 'testValue1',
+      testCss2: 'testValue2',
+      testCss3: 'testValue3'
+    })
+  })
+
+  it('should skip styles it is not passed', () => {
+    // i.e. no testCss3 in output
+    expect(
+      compound({
+        $testProp1: 'testValue1',
+        $testProp2: 'testValue2'
+      })
+    ).toEqual({ testCss1: 'testValue1', testCss2: 'testValue2' })
+  })
+
+  it('should deep assign for multiple breakpoints', () => {
+    expect(
+      compound({
+        $testProp1: ['testValue1a', 'testValue1b', 'testValue1c'],
+        $testProp2: ['testValue2a', 'testValue2b']
+      })
+    ).toEqual({
+      testCss1: 'testValue1a',
+      testCss2: 'testValue2a',
+      '@media screen and (min-width: 40em)': {
+        testCss1: 'testValue1b',
+        testCss2: 'testValue2b'
+      },
+      '@media screen and (min-width: 52em)': {
+        testCss1: 'testValue1c'
+      }
+    })
+  })
+
+  it('should deep assign for multiple pseudoselectors', () => {
+    expect(
+      compound({
+        $testProp1: {
+          default: 'testValue1',
+          hover: 'testValue1h',
+          active: 'testValue1a'
+        },
+        $testProp2: { default: 'testValue2', hover: 'testValue2h' }
+      })
+    ).toEqual({
+      testCss1: 'testValue1',
+      testCss2: 'testValue2',
+      '&:hover': {
+        testCss1: 'testValue1h',
+        testCss2: 'testValue2h'
+      },
+      '&:active': {
+        testCss1: 'testValue1a'
+      }
+    })
   })
 })
