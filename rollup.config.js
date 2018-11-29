@@ -5,6 +5,10 @@ import { terser } from 'rollup-plugin-terser'
 
 import pkg from './package.json'
 
+const production = !(
+  process.env.NODE_ENV === 'production' && process.env.ROLLUP_WATCH
+)
+
 const defaultArgs = {
   input: 'src/index.js',
   external: [
@@ -24,13 +28,9 @@ const defaultArgs = {
       exclude: 'node_modules/**',
       runtimeHelpers: true
     }),
-    terser()
+    production && terser()
   ]
 }
-
-const production = !(
-  process.env.NODE_ENV === 'production' && process.env.ROLLUP_WATCH
-)
 
 export default [
   {
