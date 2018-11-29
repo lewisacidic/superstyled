@@ -37,7 +37,8 @@ export default [
     output: {
       name: 'superstyled',
       file: pkg.browser,
-      format: 'umd'
+      format: 'umd',
+      sourcemap: true
     },
     plugins: [
       resolve(),
@@ -50,11 +51,11 @@ export default [
     ]
   },
   {
-    output: { file: pkg.module, format: 'es' },
+    output: { file: pkg.module, format: 'es', sourcemap: true },
     ...defaultArgs
   },
   {
-    output: { file: pkg.main, format: 'cjs' },
+    output: { file: pkg.main, format: 'cjs', sourcemap: true },
     ...defaultArgs
   }
 ]
