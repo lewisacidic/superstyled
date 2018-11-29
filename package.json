@@ -1,6 +1,6 @@
 {
   "name": "superstyled",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "styled-components, now super!",
   "main": "dist/superstyled.cjs.js",
   "module": "dist/superstyled.esm.js",
