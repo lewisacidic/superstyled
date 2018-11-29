@@ -16,7 +16,8 @@ const defaultArgs = {
     'lodash/isArray',
     'lodash/isObject',
     'lodash/identity',
-    'lodash/flow'
+    'lodash/flow',
+    'prop-types'
   ],
   plugins: [
     babel({

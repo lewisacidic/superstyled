@@ -1,8 +1,23 @@
-import { style, compoundStyle } from '.'
+import { style, compoundStyle, styleValueType } from '.'
 
 describe('style', () => {
   it('should import as a function', () => {
     expect(typeof style).toBe('function')
+  })
+
+  it('should provide the prop key', () => {
+    const fn = style({ prop: '$test', css: 'testCss' })
+    expect(fn.prop).toEqual('$test')
+  })
+
+  it('should provide the css key', () => {
+    const fn = style({ prop: '$test', css: 'testCss' })
+    expect(fn.css).toBe('testCss')
+  })
+
+  it('should provide correct propTypes', () => {
+    const fn = style({ prop: '$test', css: 'testCss' })
+    expect(fn.propTypes).toEqual({ $test: styleValueType })
   })
 
   it('should return an appropriate style object', () => {
@@ -135,10 +150,15 @@ describe('style with breakpoints', () => {
 })
 
 describe('style with a transformer', () => {
+  const transformer = v => v + 'em'
   const fn = style({
     prop: '$test',
     css: 'testCss',
-    transformer: v => v + 'em'
+    transformer
+  })
+
+  it('should provide the transformer', () => {
+    expect(fn.transformer).toBe(transformer)
   })
 
   it('should apply a transformer', () => {
@@ -185,14 +205,18 @@ describe('style with a transformer', () => {
 })
 
 describe('style with theme', () => {
-  let fn = style({ prop: '$test', css: 'testCss', themeKey: 'testKey' })
+  let fn = style({ prop: '$test', css: 'testCss', themeKey: 'testThemeKey' })
+
+  it('should save the theme key', () => {
+    expect(fn.themeKey).toBe('testThemeKey')
+  })
 
   it('should retrieve style elements from the theme', () => {
     expect(
       fn({
         $test: 'example',
         theme: {
-          testKey: {
+          testThemeKey: {
             example: 42
           }
         }
@@ -205,7 +229,7 @@ describe('style with theme', () => {
       fn({
         $test: 'failedExample',
         theme: {
-          testKey: {
+          testThemeKey: {
             example: 42
           }
         }
@@ -218,7 +242,7 @@ describe('style with theme', () => {
       fn({
         $test: 'example.1',
         theme: {
-          testKey: {
+          testThemeKey: {
             example: ['a', 'b', 'c']
           }
         }
@@ -231,7 +255,7 @@ describe('style with theme', () => {
       fn({
         $test: 'example.innerExample',
         theme: {
-          testKey: {
+          testThemeKey: {
             example: {
               innerExample: 42
             }
@@ -246,7 +270,7 @@ describe('style with theme', () => {
       fn({
         $test: ['example1', 'example2', 'example3'],
         theme: {
-          testKey: {
+          testThemeKey: {
             example1: 21,
             example2: 42,
             example3: 84
@@ -269,7 +293,7 @@ describe('style with theme', () => {
           active: 'example3'
         },
         theme: {
-          testKey: {
+          testThemeKey: {
             example1: 21,
             example2: 42,
             example3: 84
@@ -290,7 +314,7 @@ describe('style with theme', () => {
   let tFn = style({
     prop: '$test',
     css: 'testCss',
-    themeKey: 'testKey',
+    themeKey: 'testThemeKey',
     transformer: v => v + 'px'
   })
   it('should apply transformers to the elements retrieved from the theme', () => {
@@ -298,7 +322,7 @@ describe('style with theme', () => {
       tFn({
         $test: 'example',
         theme: {
-          testKey: {
+          testThemeKey: {
             example: 42
           }
         }
@@ -308,14 +332,35 @@ describe('style with theme', () => {
 })
 
 describe('compound style', () => {
-  const compound = compoundStyle(
+  const styleFns = [
     style({ prop: '$testProp1', css: 'testCss1' }),
     style({ prop: '$testProp2', css: 'testCss2' }),
     style({ prop: '$testProp3', css: 'testCss3' })
-  )
+  ]
+  const compound = compoundStyle(...styleFns)
 
   it('should import as a function', () => {
     expect(typeof compound).toBe('function')
+  })
+
+  it('should provide constituent styles', () => {
+    expect(compound.styles).toEqual({
+      $testProp1: styleFns[0],
+      $testProp2: styleFns[1],
+      $testProp3: styleFns[2]
+    })
+  })
+
+  it('should provide constituent prop keys', () => {
+    expect(compound.prop).toEqual(['$testProp1', '$testProp2', '$testProp3'])
+  })
+
+  it('should provide relevant propTypes', () => {
+    expect(compound.propTypes).toEqual({
+      $testProp1: styleValueType,
+      $testProp2: styleValueType,
+      $testProp3: styleValueType
+    })
   })
 
   it('should render single styles', () => {
