@@ -21,9 +21,11 @@ const defaultArgs = {
     'lodash/get',
     'lodash/isArray',
     'lodash/isObject',
+    'lodash/isUndefined',
     'lodash/identity',
     'lodash/flow',
     'lodash/omit',
+    'lodash/forEach',
     'prop-types'
   ],
   plugins: [

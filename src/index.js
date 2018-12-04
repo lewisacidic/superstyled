@@ -3,10 +3,12 @@ import {
   identity,
   isObject,
   isArray,
+  isUndefined,
   get,
   keys,
   merge,
   omit,
+  forEach,
   intersection
 } from 'lodash'
 
@@ -35,24 +37,24 @@ export const style = ({ prop, css, themeKey, transformer = identity }) => {
       transformer
     ])
   }
-  function fn(value, themeValues, breakpoints) {
+  function fn(value, themeValues, breakpoints, acc = {}) {
     const args = [themeValues, breakpoints]
     if (isArray(value)) {
-      return value
-        .slice(1)
-        .reduce(
-          (acc, v, i) => merge(acc, { [breakpoints[i]]: fn(v, ...args) }),
-          fn(value[0], ...args)
-        )
+      fn(value[0], ...args, acc)
+      forEach(value.slice(1), (v, i) => {
+        if (isUndefined(acc[breakpoints[i]])) acc[breakpoints[i]] = {}
+        fn(v, ...args, acc[breakpoints[i]])
+      })
     } else if (isObject(value)) {
-      return keys(omit(value, 'default')).reduce(
-        (acc, pseudo) =>
-          merge(acc, { ['&:' + pseudo]: fn(value[pseudo], ...args) }),
-        fn(value.default, ...args)
-      )
+      fn(value.default, ...args, acc)
+      forEach(keys(omit(value, 'default')), pseudo => {
+        if (isUndefined(acc['&:' + pseudo])) acc['&:' + pseudo] = {}
+        fn(value[pseudo], ...args, acc['&:' + pseudo])
+      })
     } else {
-      return { [css]: transformer(value, ...args) }
+      acc[css] = transformer(value, ...args)
     }
+    return acc
   }
   const styleFn = props =>
     fn(
