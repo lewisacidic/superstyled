@@ -5,7 +5,6 @@ import {
   isArray,
   get,
   keys,
-  assign,
   merge,
   intersection
 } from 'lodash'
@@ -41,16 +40,16 @@ export const style = ({ prop, css, themeKey, transformer = identity }) => {
       return value.reduce(
         (acc, v, i) =>
           i > 0
-            ? assign({ [breakpoints[i - 1]]: fn(v, ...args) }, acc)
-            : assign(fn(v, ...args), acc),
+            ? merge({ [breakpoints[i - 1]]: fn(v, ...args) }, acc)
+            : merge(fn(v, ...args), acc),
         {}
       )
     } else if (isObject(value)) {
       return keys(value).reduce((acc, pseudo) => {
         if (pseudo === 'default') {
-          return assign(fn(value[pseudo], ...args), acc)
+          return merge(fn(value[pseudo], ...args), acc)
         } else {
-          return assign({ ['&:' + pseudo]: fn(value[pseudo], ...args) }, acc)
+          return merge({ ['&:' + pseudo]: fn(value[pseudo], ...args) }, acc)
         }
       }, {})
     } else {
@@ -75,7 +74,7 @@ export const style = ({ prop, css, themeKey, transformer = identity }) => {
 
 export const compoundStyle = (...styles) => {
   styles = styles.reduce(
-    (acc, style) => assign(acc, { [style.prop]: style }),
+    (acc, style) => merge(acc, { [style.prop]: style }),
     {}
   )
   const styleFn = props => {
@@ -84,6 +83,6 @@ export const compoundStyle = (...styles) => {
   }
   styleFn.styles = styles
   styleFn.prop = keys(styles)
-  styleFn.propTypes = assign(...styleFn.prop.map(s => styles[s].propTypes))
+  styleFn.propTypes = merge(...styleFn.prop.map(s => styles[s].propTypes))
   return styleFn
 }

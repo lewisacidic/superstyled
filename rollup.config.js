@@ -17,7 +17,6 @@ const defaultArgs = {
   external: [
     'lodash/intersection',
     'lodash/merge',
-    'lodash/assign',
     'lodash/keys',
     'lodash/get',
     'lodash/isArray',
