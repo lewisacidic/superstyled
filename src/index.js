@@ -6,6 +6,7 @@ import {
   get,
   keys,
   merge,
+  omit,
   intersection
 } from 'lodash'
 
@@ -37,21 +38,18 @@ export const style = ({ prop, css, themeKey, transformer = identity }) => {
   function fn(value, themeValues, breakpoints) {
     const args = [themeValues, breakpoints]
     if (isArray(value)) {
-      return value.reduce(
-        (acc, v, i) =>
-          i > 0
-            ? merge({ [breakpoints[i - 1]]: fn(v, ...args) }, acc)
-            : merge(fn(v, ...args), acc),
-        {}
-      )
+      return value
+        .slice(1)
+        .reduce(
+          (acc, v, i) => merge(acc, { [breakpoints[i]]: fn(v, ...args) }),
+          fn(value[0], ...args)
+        )
     } else if (isObject(value)) {
-      return keys(value).reduce((acc, pseudo) => {
-        if (pseudo === 'default') {
-          return merge(fn(value[pseudo], ...args), acc)
-        } else {
-          return merge({ ['&:' + pseudo]: fn(value[pseudo], ...args) }, acc)
-        }
-      }, {})
+      return keys(omit(value, 'default')).reduce(
+        (acc, pseudo) =>
+          merge(acc, { ['&:' + pseudo]: fn(value[pseudo], ...args) }),
+        fn(value.default, ...args)
+      )
     } else {
       return { [css]: transformer(value, ...args) }
     }

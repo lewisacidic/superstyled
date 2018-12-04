@@ -23,6 +23,7 @@ const defaultArgs = {
     'lodash/isObject',
     'lodash/identity',
     'lodash/flow',
+    'lodash/omit',
     'prop-types'
   ],
   plugins: [
