@@ -30,8 +30,8 @@ export const styleValueType = PropTypes.oneOfType([
   PropTypes.arrayOf(pseudoselectorType) // nest
 ])
 
-export const style = ({ prop, css, themeKey, transformer = identity }) => {
-  if (themeKey) {
+export const style = ({ prop, css, key, transformer = identity }) => {
+  if (key) {
     transformer = flow([
       (value, themeValues) => get(themeValues, value, value),
       transformer
@@ -52,19 +52,20 @@ export const style = ({ prop, css, themeKey, transformer = identity }) => {
         fn(value[pseudo], ...args, acc['&:' + pseudo])
       })
     } else {
-      acc[css] = transformer(value, ...args)
+      if (!isArray(css)) css = [css]
+      forEach(css, css => (acc[css] = transformer(value, ...args)))
     }
     return acc
   }
   const styleFn = props =>
     fn(
       props[prop],
-      get(props.theme, themeKey),
+      get(props.theme, key),
       get(props.theme, 'breakpoints', defaultBreakpoints).map(breakpoint)
     )
   styleFn.prop = prop
   styleFn.css = css
-  styleFn.themeKey = themeKey
+  styleFn.key = key
   styleFn.transformer = transformer
   styleFn.propTypes = {
     [prop]: styleValueType

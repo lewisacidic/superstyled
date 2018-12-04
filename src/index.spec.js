@@ -27,6 +27,12 @@ describe('style', () => {
     expect(fn({ $test })).toEqual({ testCss: $test })
   })
 
+  it('should return a style object with multiple css keys set if a list is provided', () => {
+    const fn = style({ prop: '$test', css: ['testCss1', 'testCss2'] })
+    const $test = 'testValue'
+
+    expect(fn({ $test })).toEqual({ testCss1: $test, testCss2: $test })
+  })
   it('should return an appropriate media query enriched style object if an array is provided', () => {
     const fn = style({ prop: '$test', css: 'testCss' })
     const $test = ['testValueA', 'testValueB', 'testValueC']
@@ -205,10 +211,10 @@ describe('style with a transformer', () => {
 })
 
 describe('style with theme', () => {
-  let fn = style({ prop: '$test', css: 'testCss', themeKey: 'testThemeKey' })
+  let fn = style({ prop: '$test', css: 'testCss', key: 'testThemeKey' })
 
   it('should save the theme key', () => {
-    expect(fn.themeKey).toBe('testThemeKey')
+    expect(fn.key).toBe('testThemeKey')
   })
 
   it('should retrieve style elements from the theme', () => {
@@ -314,7 +320,7 @@ describe('style with theme', () => {
   let tFn = style({
     prop: '$test',
     css: 'testCss',
-    themeKey: 'testThemeKey',
+    key: 'testThemeKey',
     transformer: v => v + 'px'
   })
   it('should apply transformers to the elements retrieved from the theme', () => {
