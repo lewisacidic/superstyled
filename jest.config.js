@@ -6,6 +6,7 @@ module.exports = {
   testPathIgnorePatterns: ['node_modules', 'dist'],
   moduleFileExtensions: ['js'],
   testURL: 'http://localhost',
+  setupTestFrameworkScriptFile: '<rootDir>/src/__tests__/test.config.js',
   reporters: [
     'default',
     [

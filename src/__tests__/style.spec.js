@@ -1,4 +1,4 @@
-import { style, compoundStyle, styleValueType } from '.'
+import { style, compoundStyle, styleValueType } from '../style'
 
 describe('style', () => {
   it('should import as a function', () => {

@@ -1,4 +1,4 @@
-import { style } from '.'
+import { style } from './style'
 
 export const color = style({
   prop: '$color',
