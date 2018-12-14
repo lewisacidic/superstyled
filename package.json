@@ -71,7 +71,6 @@
     "test": "jest",
     "lint": "eslint .",
     "format": "yarn lint --fix",
-    "clean": "rimraf dist reports yarn-error.log",
-    "publish": "yarn publish"
+    "clean": "rimraf dist reports yarn-error.log"
   }
 }
