@@ -26,6 +26,7 @@ const defaultArgs = {
     'lodash/flow',
     'lodash/omit',
     'lodash/forEach',
+    'lodash/endsWith',
     'prop-types'
   ],
   plugins: [
