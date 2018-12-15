@@ -1,5 +1,5 @@
 import { style } from './style'
-import em from './transformers'
+import { em } from './transformers'
 
 const spacing = args => style({ ...args, transformer: em, key: 'spacings' })
 
