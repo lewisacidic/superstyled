@@ -1,7 +1,9 @@
 import { style } from './style'
+import { assign } from 'lodash'
 import { em } from './transformers'
 
-const spacing = args => style({ ...args, transformer: em, key: 'spacings' })
+const spacing = args =>
+  style(assign(args, { transformer: em, key: 'spacings' }))
 
 export const padding = spacing({
   prop: '$padding',

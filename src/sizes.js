@@ -1,7 +1,9 @@
 import { style } from './style'
+import { assign } from 'lodash'
 import { dist } from './transformers'
 
-const length = args => style({ ...args, key: 'lengths', transformer: dist })
+const length = args =>
+  style(assign(args, { key: 'lengths', transformer: dist }))
 
 export const width = length({
   prop: '$width',
