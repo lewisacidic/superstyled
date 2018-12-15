@@ -10,7 +10,7 @@ const Header = () => (
     $flexDirection="column"
     $justifyContent="center"
     $alignItems="center"
-    $marginTop="2em"
+    $marginY="2em"
   >
     <Icon $display="block" $size="8em" />
     <Text

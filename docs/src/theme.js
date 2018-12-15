@@ -1,13 +1,14 @@
 import 'typeface-source-sans-pro'
-import styledNormalize from 'styled-normalize'
 
 const theme = {
   fonts: {
     sans: 'Source Sans Pro, sans-serif'
   },
   colors: {
+    text: 'rgba(0,0,0,0.8)',
     primary: '#58c9ad',
-    secondary: '#798d9b'
+    secondary: '#798d9b',
+    greys: ['#ececec', '#f8f8f8']
   },
   fontSizes: {
     '3xs': '0.33em',
@@ -23,7 +24,6 @@ const theme = {
 }
 
 export const globals = {
-  ...styledNormalize,
   '*': { fontFamily: theme.fonts.sans }
 }
 

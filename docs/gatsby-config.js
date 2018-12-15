@@ -5,7 +5,8 @@ module.exports = {
     author: {
       name: 'Rich Lewis',
       twitter: '@richlewis42'
-    }
+    },
+    nav: [{ label: 'home', to: '/' }, { label: 'about', to: '/about/' }]
   },
   plugins: [
     'gatsby-plugin-react-helmet',

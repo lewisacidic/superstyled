@@ -1,7 +1,7 @@
 import styled from 'styled-components'
-import { typography, userSelect } from 'superstyled'
+import { typography, userSelect, display } from 'superstyled'
 
-const Text = styled.div(...typography, userSelect)
+const Text = styled.div(...typography, userSelect, display)
 
 Text.defaultProps = {
   $textDecoration: 'none'

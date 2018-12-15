@@ -1,10 +1,11 @@
 import styled from 'styled-components'
-import { paddings, margins } from 'superstyled'
+import { boxModel, backgrounds, textDecoration } from 'superstyled'
 
 const Box = styled.div(
   { display: 'block', boxSizing: 'border-box' },
-  ...paddings,
-  ...margins
+  ...boxModel,
+  ...backgrounds,
+  textDecoration
 )
 
 Box.defaultProps = {
