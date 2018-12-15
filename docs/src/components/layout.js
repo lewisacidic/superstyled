@@ -1,27 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StaticQuery, graphql } from 'gatsby'
+import { ThemeProvider, createGlobalStyle } from 'styled-components'
 
 import Header from './header'
+import Page from './page'
+import Background from './background'
+import theme, { globals } from '../theme'
+
+const Globals = createGlobalStyle(globals)
 
 const Layout = ({ children }) => (
-  <StaticQuery
-    query={graphql`
-      query SiteTitleQuery {
-        site {
-          siteMetadata {
-            title
-          }
-        }
-      }
-    `}
-    render={data => (
-      <>
-        <Header siteTitle={data.site.siteMetadata.title} />
-        {children}
-      </>
-    )}
-  />
+  <ThemeProvider theme={theme}>
+    <Background>
+      <Globals />
+      <Header />
+      <Page>{children}</Page>
+    </Background>
+  </ThemeProvider>
 )
 
 Layout.propTypes = {

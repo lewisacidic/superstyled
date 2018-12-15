@@ -1,24 +1,34 @@
 import { Link } from 'gatsby'
-import PropTypes from 'prop-types'
 import React from 'react'
 
-import Icon from '../images/superstyled-icon.svg'
+import Flex from './flex'
+import Icon from './icon'
+import Text from './text'
 
-const Header = ({ siteTitle }) => (
-  <div>
-    <h1>
-      <Icon />
-      <Link to="/">{siteTitle}</Link>
-    </h1>
-  </div>
+const Header = () => (
+  <Flex
+    $flexDirection="column"
+    $justifyContent="center"
+    $alignItems="center"
+    $marginTop="2em"
+  >
+    <Icon $display="block" $size="8em" />
+    <Text
+      as={Link}
+      to="/"
+      $color="primary"
+      $fontSize="2xl"
+      $fontFamily="sans"
+      $userSelect="none"
+    >
+      <Text as="span" $color="primary" $fontWeight="600">
+        super
+      </Text>
+      <Text as="span" $color="secondary" $fontWeight="400">
+        styled
+      </Text>
+    </Text>
+  </Flex>
 )
-
-Header.propTypes = {
-  siteTitle: PropTypes.string
-}
-
-Header.defaultProps = {
-  siteTitle: ''
-}
 
 export default Header
