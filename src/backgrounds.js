@@ -11,3 +11,5 @@ export const backgroundColor = style({
   css: 'backgroundColor',
   key: 'colors'
 })
+
+export default [background, backgroundColor]

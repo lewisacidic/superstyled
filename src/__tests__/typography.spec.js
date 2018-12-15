@@ -10,7 +10,8 @@ import {
   fontWeight,
   textTransform,
   lineHeight,
-  letterSpacing
+  letterSpacing,
+  textDecoration
 } from '../typography'
 
 const theme = {
@@ -209,6 +210,15 @@ describe('textTransform', () => {
     expect(
       renderComponent({ C, props: { $textTransform: 'uppercase' } })
     ).toHaveStyleRule('text-transform', 'uppercase')
+  })
+})
+
+describe('textDecoration', () => {
+  const C = styled.div(textDecoration)
+  it('should add text-transform as a style rule', () => {
+    expect(
+      renderComponent({ C, props: { $textTransform: 'underline' } })
+    ).toHaveStyleRule('text-transform', 'underline')
   })
 })
 

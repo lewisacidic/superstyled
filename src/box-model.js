@@ -157,3 +157,32 @@ export const borders = [
   borderBottom,
   borderLeft
 ]
+
+export default [
+  paddings,
+  padding,
+  paddingTop,
+  paddingRight,
+  paddingBottom,
+  paddingLeft,
+  paddingX,
+  paddingY,
+  margins,
+  margin,
+  marginTop,
+  marginRight,
+  marginBottom,
+  marginLeft,
+  marginX,
+  marginY,
+  borders,
+  border,
+  borderRadius,
+  borderColor,
+  borderTop,
+  borderRight,
+  borderBottom,
+  borderLeft,
+  boxShadow,
+  outline
+]

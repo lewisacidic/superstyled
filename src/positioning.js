@@ -28,3 +28,5 @@ export const zIndex = style({
   prop: '$zIndex',
   css: 'zIndex'
 })
+
+export default [position, top, right, bottom, left, zIndex]

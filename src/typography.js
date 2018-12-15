@@ -39,6 +39,11 @@ export const textTransform = style({
   css: 'textTransform'
 })
 
+export const textDecoration = style({
+  prop: '$textDecoration',
+  css: 'textDecoration'
+})
+
 export const lineHeight = style({
   prop: '$lineHeight',
   css: 'lineHeight'
@@ -50,12 +55,14 @@ export const letterSpacing = style({
 })
 
 export default [
+  color,
   fontFamily,
   fontSize,
   fontWeight,
   fontStyle,
   fontVariant,
   textTransform,
+  textDecoration,
   lineHeight,
   letterSpacing
 ]

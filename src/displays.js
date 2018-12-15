@@ -14,3 +14,5 @@ export const transform = style({
   prop: '$transform',
   css: 'transform'
 })
+
+export default [display, opacity, transform]
