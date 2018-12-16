@@ -15,6 +15,7 @@
     "react-dom": "^16.6.3",
     "react-helmet": "^5.2.0",
     "react-svg": "^7.2.2",
+    "styled-components": "^4.1.2",
     "styled-normalize": "^8.0.4",
     "typeface-source-sans-pro": "^0.0.54"
   },

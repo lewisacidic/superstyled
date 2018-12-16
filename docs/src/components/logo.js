@@ -7,6 +7,9 @@ import Text from './text'
 
 const Header = () => (
   <Flex
+    as={Link}
+    to="/"
+    $textDecoration="none"
     $flexDirection="column"
     $justifyContent="center"
     $alignItems="center"
@@ -14,8 +17,6 @@ const Header = () => (
   >
     <Icon $display="block" $size="8em" />
     <Text
-      as={Link}
-      to="/"
       $color="primary"
       $fontSize="2xl"
       $fontFamily="sans"

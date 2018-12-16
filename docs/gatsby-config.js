@@ -6,7 +6,12 @@ module.exports = {
       name: 'Rich Lewis',
       twitter: '@richlewis42'
     },
-    nav: [{ label: 'home', to: '/' }, { label: 'about', to: '/about/' }]
+    nav: [
+      { label: 'home', to: '/' },
+      { label: 'quickstart', to: '/quickstart/' },
+      { label: 'examples', to: '/examples/' },
+      { label: 'FAQ', to: '/faq/' }
+    ]
   },
   plugins: [
     'gatsby-plugin-react-helmet',

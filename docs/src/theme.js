@@ -24,7 +24,7 @@ const theme = {
 }
 
 export const globals = {
-  '*': { fontFamily: theme.fonts.sans }
+  '*': { fontFamily: theme.fonts.sans, color: theme.colors.text }
 }
 
 export default theme

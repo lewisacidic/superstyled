@@ -4,7 +4,7 @@ import { StaticQuery, graphql } from 'gatsby'
 import { ThemeProvider, createGlobalStyle } from 'styled-components'
 import styledNormalize from 'styled-normalize'
 
-import Header from './header'
+import Header from './logo'
 import Page from './page'
 import Flex from './flex'
 import Nav from './nav'

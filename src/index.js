@@ -12,6 +12,9 @@ export { default as displays } from './displays'
 export * from './flex'
 export { default as flex } from './flex'
 
+export * from './interaction'
+export { default as interaction } from './interaction'
+
 export * from './positioning'
 export { default as positioning } from './positioning'
 
