@@ -22,6 +22,7 @@
   "license": "MIT",
   "scripts": {
     "build": "gatsby build",
-    "dev": "gatsby develop"
+    "dev": "gatsby develop",
+    "serve": "gatsby serve"
   }
 }

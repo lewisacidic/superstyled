@@ -73,6 +73,7 @@
     "dev:lib": "rollup -c -w",
     "dev:docs": "cd docs && yarn dev",
     "dev": "concurrently yarn:dev:*",
+    "serve:docs": "cd docs && yarn serve",
     "test": "jest",
     "lint": "eslint .",
     "format": "yarn lint --fix",
