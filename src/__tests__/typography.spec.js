@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { renderComponent } from './utils'
+import { renderComponent } from './test-utils'
 
 import {
   color,
@@ -215,10 +215,10 @@ describe('textTransform', () => {
 
 describe('textDecoration', () => {
   const C = styled.div(textDecoration)
-  it('should add text-transform as a style rule', () => {
+  it('should add text-decoration as a style rule', () => {
     expect(
-      renderComponent({ C, props: { $textTransform: 'underline' } })
-    ).toHaveStyleRule('text-transform', 'underline')
+      renderComponent({ C, props: { $textDecoration: 'underline' } })
+    ).toHaveStyleRule('text-decoration', 'underline')
   })
 })
 

@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 
-import { renderComponent } from './utils'
+import { renderComponent } from './test-utils'
 
-import { display, opacity, transform } from '../display'
+import { display, opacity, transform } from '../displays'
 
 describe('display', () => {
   const C = styled.div(display)

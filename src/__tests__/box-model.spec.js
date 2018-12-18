@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { renderComponent } from './utils'
+import { renderComponent } from './test-utils'
 
 import {
   paddings,
