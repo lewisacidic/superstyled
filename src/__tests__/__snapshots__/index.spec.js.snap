@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should work 1`] = `
+.emotion-0 {
+  color: red;
+}
+
+.emotion-0:hover {
+  color: green;
+}
+
+<p
+  className="emotion-0"
+>
+  wow
+</p>
+`;

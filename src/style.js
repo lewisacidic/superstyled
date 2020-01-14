@@ -1,89 +1,27 @@
-import {
-  flow,
-  identity,
-  isObject,
-  isArray,
-  isUndefined,
-  get,
-  keys,
-  merge,
-  omit,
-  forEach,
-  intersection
-} from 'lodash'
+import merge from "lodash.merge"
+import pick from "lodash.pick"
 
-import PropTypes from 'prop-types'
-
-import { em, breakpoint } from './transformers'
-
-const defaultBreakpoints = [40, 52, 64].map(em)
-
-const responsiveType = PropTypes.arrayOf(PropTypes.string)
-const pseudoselectorType = PropTypes.objectOf(PropTypes.string)
-export const styleValueType = PropTypes.oneOfType([
-  PropTypes.string,
-  responsiveType,
-  pseudoselectorType,
-  // nested responsive e.g. { default: [0, 1], hover: [2, 3] }
-  PropTypes.objectOf(responsiveType),
-  // nested pseudo e.g. [{default: 0, hover: 1}, {default: 2, hover: 3}]
-  PropTypes.arrayOf(pseudoselectorType) // nest
-])
-
-export const style = ({ prop, css, key, transformer = identity }) => {
-  if (key) {
-    transformer = flow([
-      (value, themeValues) => get(themeValues, value, value),
-      transformer
-    ])
-  }
-  function fn(value, themeValues, breakpoints, acc = {}) {
-    const args = [themeValues, breakpoints]
-    if (isArray(value)) {
-      fn(value[0], ...args, acc)
-      forEach(value.slice(1), (v, i) => {
-        if (isUndefined(acc[breakpoints[i]])) acc[breakpoints[i]] = {}
-        fn(v, ...args, acc[breakpoints[i]])
-      })
-    } else if (isObject(value)) {
-      fn(value.default, ...args, acc)
-      forEach(keys(omit(value, 'default')), pseudo => {
-        if (isUndefined(acc['&:' + pseudo])) acc['&:' + pseudo] = {}
-        fn(value[pseudo], ...args, acc['&:' + pseudo])
-      })
-    } else {
-      if (!isArray(css)) css = [css]
-      forEach(css, css => (acc[css] = transformer(value, ...args)))
-    }
-    return acc
-  }
-  const styleFn = props =>
-    fn(
-      props[prop],
-      get(props.theme, key),
-      get(props.theme, 'breakpoints', defaultBreakpoints).map(breakpoint)
-    )
-  styleFn.prop = prop
-  styleFn.css = css
-  styleFn.key = key
-  styleFn.transformer = transformer
-  styleFn.propTypes = {
-    [prop]: styleValueType
-  }
-  return styleFn
+let Style = function(obj) {
+  merge(this, obj)
 }
 
-export const compoundStyle = (...styles) => {
-  styles = styles.reduce(
-    (acc, style) => merge(acc, { [style.prop]: style }),
-    {}
-  )
-  const styleFn = props => {
-    const styleProps = intersection(keys(props), keys(styles))
-    return styleProps.reduce((acc, prop) => merge(acc, styles[prop](props)), {})
-  }
-  styleFn.styles = styles
-  styleFn.prop = keys(styles)
-  styleFn.propTypes = merge(...styleFn.prop.map(s => styles[s].propTypes))
-  return styleFn
+Style.prototype.on = function(selector, value) {
+  const key = Object.keys(this)[0]
+  return new Style({ ...this, [selector]: { [key]: value } })
 }
+
+Style.prototype.hover = function(value) {
+  return this.on(":hover", value)
+}
+
+Style.prototype.active = function(value) {
+  return this.on(":active", value)
+}
+
+Style.prototype.done = function() {
+  return pick(this, Object.getOwnPropertyNames(this))
+}
+
+const style = k => v => new Style({ [k]: v })
+
+export default style
