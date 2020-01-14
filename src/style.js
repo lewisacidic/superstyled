@@ -7,7 +7,12 @@ let Style = function(obj) {
 
 Style.prototype.on = function(selector, value) {
   const key = Object.keys(this)[0]
-  return new Style({ ...this, [selector]: { [key]: value } })
+  return new Style({
+    ...this,
+    [selector]: {
+      [key]: typeof value === "function" ? value(this[key]) : value
+    }
+  })
 }
 
 Style.prototype.hover = function(value) {
