@@ -10,7 +10,6 @@ module.exports = (api, options = {}) => {
         {
           loose: true,
           modules: "auto",
-          useBuiltIns: "usage",
           shippedProposals: true,
           targets: {
             browsers: [">0.25%", "not dead"]

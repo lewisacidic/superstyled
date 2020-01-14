@@ -1,0 +1,8 @@
+extends: 
+  - ../../.eslintrc.yml
+  - plugin:react/recommended
+env: 
+  jest: true
+  settings:
+    react: 
+      version: 16.12
