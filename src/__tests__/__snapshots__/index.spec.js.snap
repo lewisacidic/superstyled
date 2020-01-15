@@ -1,6 +1,36 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`should work 1`] = `
+exports[`should add active rules with \`.active\` 1`] = `
+.emotion-0 {
+  color: red;
+}
+
+.emotion-0:active {
+  color: blue;
+}
+
+<button
+  className="emotion-0"
+>
+  test content
+</button>
+`;
+
+exports[`should add arbitrary rules with \`.on\` 1`] = `
+.emotion-0 {
+  color: red;
+}
+
+.emotion-0::before {
+  color: yellow;
+}
+
+<div
+  className="emotion-0"
+/>
+`;
+
+exports[`should add hover rules with \`.hover\` 1`] = `
 .emotion-0 {
   color: red;
 }
@@ -12,7 +42,19 @@ exports[`should work 1`] = `
 <p
   className="emotion-0"
 >
-  wow
+  test content
+</p>
+`;
+
+exports[`should add styles 1`] = `
+.emotion-0 {
+  color: red;
+}
+
+<p
+  className="emotion-0"
+>
+  test content
 </p>
 `;
 
@@ -28,6 +70,6 @@ exports[`should work with functions 1`] = `
 <p
   className="emotion-0"
 >
-  wow
+  test content
 </p>
 `;
