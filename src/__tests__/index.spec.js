@@ -1,9 +1,8 @@
 import React from "react"
-import TestRenderer from "react-test-renderer"
+
+import { render } from "./utils"
 
 import { color } from ".."
-
-const render = jsx => TestRenderer.create(jsx).toJSON()
 
 it("should add styles", () => {
   const tree = render(<p css={color("red").done()}>test content</p>)

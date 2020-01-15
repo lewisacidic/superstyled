@@ -1,2 +1,2 @@
-export { default as color } from "./color"
+export { color, background } from "./colors"
 export { default as Style } from "./style"
